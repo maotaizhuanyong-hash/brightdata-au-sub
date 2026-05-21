@@ -1,0 +1,30 @@
+mixed-port: 7890
+allow-lan: false
+log-level: info
+external-controller: 127.0.0.1:9090
+
+proxies:
+  - name: "AU-Sydney-BrightData"
+    type: http
+    server: brd.superproxy.io
+    port: 33335
+    username: "brd-customer-hl_7719bedb-zone-isp_proxy2"
+    password: "ndr5jw0jr2rg"
+    tls: false
+    skip-cert-verify: true
+
+proxy-groups:
+  - name: "Proxy"
+    type: select
+    proxies:
+      - "AU-Sydney-BrightData"
+      - "DIRECT"
+
+  - name: "Final"
+    type: select
+    proxies:
+      - "Proxy"
+      - "DIRECT"
+
+rules:
+  - MATCH,Final
