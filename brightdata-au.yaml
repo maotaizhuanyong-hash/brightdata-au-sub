@@ -4,7 +4,16 @@ log-level: info
 external-controller: 127.0.0.1:9090
 
 proxies:
-  - name: "AU-Sydney-BrightData"
+  - name: "AU-Resip-Google"
+    type: http
+    server: syisp1.resip.cc
+    port: 2096
+    username: "resip_619acdbf-b380-4cca-9615-b5535c6a48ef"
+    password: "1779297402566"
+    tls: false
+    skip-cert-verify: true
+
+  - name: "AU-BrightData-Business"
     type: http
     server: brd.superproxy.io
     port: 33335
@@ -14,16 +23,23 @@ proxies:
     skip-cert-verify: true
 
 proxy-groups:
-  - name: "Proxy"
+  - name: "Google专用"
     type: select
     proxies:
-      - "AU-Sydney-BrightData"
+      - "AU-Resip-Google"
+      - "DIRECT"
+
+  - name: "外贸业务"
+    type: select
+    proxies:
+      - "AU-BrightData-Business"
       - "DIRECT"
 
   - name: "Final"
     type: select
     proxies:
-      - "Proxy"
+      - "Google专用"
+      - "外贸业务"
       - "DIRECT"
 
 rules:
